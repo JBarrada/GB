@@ -1,0 +1,27 @@
+#include <stdint.h>
+
+extern void setup_vga();
+extern void setup_palette_gb();
+extern void demobars();
+extern void write_pixel_frame(unsigned char *d);
+extern void draw_gb();
+
+extern unsigned int scrn[256][256];
+extern unsigned char due_render;
+
+unsigned char frame_buffer[640*480];
+
+void kernel_main() {
+	setup_vga();
+	//setup_palette_gb();
+	
+	draw_gb();
+	
+	cpu_reset();
+	mmu_reset();
+	gpu_reset();
+	mmu_load();
+	
+	while (1)
+		exec();
+}
